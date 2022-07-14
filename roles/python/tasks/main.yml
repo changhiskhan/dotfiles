@@ -1,30 +1,28 @@
 - include_vars: ../vars/main.yml
 
 - name: Download Miniconda
-  become: false
   get_url:
     url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
     dest: /tmp/install-miniconda.sh
     checksum: sha256:78f39f9bae971ec1ae7969f0516017f2413f17796670f7040725dd83fcff5689
     mode: 0755
+  register: download_miniconda
 
 - name: Create conda folder
-  become: false
   file:
     path: "{{ conda_dir }}"
     state: directory
-    mode: 755
+    mode: 0755
     recurse: yes
+  register: create_conda_dir
+  when: download_miniconda.changed
 
 - name: Run the installer
-  shell: "/tmp/install-miniconda.sh -b -u -p {{ conda_dir }}"
+  shell: |
+    /tmp/install-miniconda.sh -b -u -p {{ conda_dir }}
+    {{ conda_dir }}/bin/conda init zsh
+  when: (download_miniconda.changed) and (create_conda_dir.changed)
+  register: install_conda
 
-- name: Remove the installer
-  file:
-    state: absent
-    path: /tmp/install-miniconda.sh
-
-- name: Add miniconda bin to path
-  shell: "./conda init zsh"
-  args:
-    chdir: "{{ conda_dir }}/bin"
+- name: ohmyzsh shows conda env
+  shell: "{{ conda_dir }}/bin/conda config --set changeps1 False"

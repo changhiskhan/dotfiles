@@ -9,6 +9,7 @@
       - software-properties-common
       - lsb-release
       - gawk
+      - gnupg
 
 - name: Get distro name
   shell: "lsb_release -si | awk '{print tolower($0)}'"

@@ -13,3 +13,9 @@ cat <<EOT >> $HOME/.zsh_local
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
 EOT
+
+# Pip conf
+  cat <<EOT >> $HOME/.config/pip/pip.conf
+  trusted-host = pypi.org
+  extra-index-url = https://pypi.org/simple
+  EOT

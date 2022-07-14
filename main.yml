@@ -5,15 +5,13 @@
     home_dir: "{{ ansible_env.HOME }}"
   roles:
     - { role: common, become: yes }
-    - { role: zsh, become: yes, tags: [ 'dev', 'zsh' ] }
-    - { role: python, become: yes, tags: [ 'dev', 'python' ] }
+    - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }
+    - { role: python, become: no, tags: [ 'dev', 'python' ] }
     - { role: docker, become: yes, tags: [ 'dev', 'docker' ] }
+    - { role: aws, become: yes, tags: [ 'dev', 'aws' ] }
     #- { role: git, become: yes, tags: [ 'dev', 'git' ] }
     #- { role: gcc, become: yes, tags: [ 'dev', 'gcc' ] }
-
-    #- { role: aws, become: yes, tags: [ 'dev', 'aws' ] }
     #- { role: java, become: yes, tags: [ 'dev', 'java' ] }
-
     #- { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
     #- { role: scala, become: yes, tags: [ 'dev', 'scala' ] }
     #- { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }

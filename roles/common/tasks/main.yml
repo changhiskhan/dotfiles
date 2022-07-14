@@ -19,6 +19,9 @@
     - ca-certificates
     - software-properties-common
     - lsb-release
+    - gnupg
+    - unzip
+    - tar
 
 - name: link gitconfig
   file:
