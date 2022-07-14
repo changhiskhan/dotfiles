@@ -1,0 +1,39 @@
+- name: Install desktop utilities
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+      - terminator
+      - nvidia-drivers-510
+      - nvidia-dkms-510
+
+- name: Refresh snap
+  command: snap refresh
+
+- name: Install snap packages
+  snap:
+    name: "{{ packages }}"
+    classic: yes
+    state: present
+  vars:
+    packages:
+    - zoom-client
+    - slack
+    - intellij-idea-ultimate
+    - pycharm-professional
+    - clion
+
+- name: Download Chrome
+  become: false
+  get_url:
+    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dest: /tmp/chrome.deb
+    mode: 0755
+  register: download_chrome
+
+- name: Install Chrome
+  apt: deb="/tmp/chrome.deb"
+  when: download_chrome.changed
+

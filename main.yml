@@ -8,13 +8,12 @@
     - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }
     - { role: python, become: no, tags: [ 'dev', 'python' ] }
     - { role: docker, become: yes, tags: [ 'dev', 'docker' ] }
-    - { role: aws, become: yes, tags: [ 'dev', 'aws' ] }
-    #- { role: git, become: yes, tags: [ 'dev', 'git' ] }
-    #- { role: gcc, become: yes, tags: [ 'dev', 'gcc' ] }
+    - { role: aws, become: yes, tags: [ 'dev', 'aws' ]}
+    - { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
     #- { role: java, become: yes, tags: [ 'dev', 'java' ] }
-    #- { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
     #- { role: scala, become: yes, tags: [ 'dev', 'scala' ] }
     #- { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
-    #- { role: desktop, become: yes, tags: [ 'desktop' ] }
+    - { role: desktop, become: yes, tags: [ 'desktop' ],
+        when: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }} != ''"}
   tasks:
     - debug: msg="Current user {{ ansible_env.USER }}"

@@ -26,3 +26,8 @@
 
 - name: ohmyzsh shows conda env
   shell: "{{ conda_dir }}/bin/conda config --set changeps1 False"
+
+- name: Install Github CLI
+  shell: ./conda install -y -c conda-forge gh
+  args:
+    chdir: "{{ conda_dir }}"

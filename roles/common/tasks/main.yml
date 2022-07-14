@@ -22,6 +22,8 @@
     - gnupg
     - unzip
     - tar
+    - build-essential
+    - cmake
 
 - name: link gitconfig
   file:

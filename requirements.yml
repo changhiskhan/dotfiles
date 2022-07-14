@@ -1,4 +1,4 @@
 ---
 
-# Install java role from Ansible Galaxy
-- src: geerlingguy.java
+collections:
+  - community.general
