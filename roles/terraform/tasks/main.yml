@@ -1,0 +1,39 @@
+- name: Get distro name
+  shell: "lsb_release -si | awk '{print tolower($0)}'"
+  register: distro_name
+- debug:
+    var: distro_name
+
+- name: Get release name
+  shell: "lsb_release -cs | awk '{print tolower($0)}'"
+  register: release_name
+- debug:
+    var: release_name
+
+- name: Get arch name
+  shell: "dpkg --print-architecture"
+  register: arch_name
+- debug:
+    var: arch_name
+
+- name: Add hashicorp GPG apt Key
+  apt_key:
+    url: "https://apt.releases.hashicorp.com/gpg"
+    state: present
+
+- name: Add hashicorp repository
+  apt_repository:
+    repo: "deb [arch={{ arch_name.stdout }}] \
+           https://apt.releases.hashicorp.com {{ release_name.stdout }} main"
+    state: present
+
+- name: Install terraform
+  apt:
+    name: terraform
+    update_cache: true
+    state: latest
+
+- name: Validate
+  shell: terraform -version
+  register: install_terraform
+  failed_when: install_terraform.rc != 0

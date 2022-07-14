@@ -1,6 +1,9 @@
 ---
 - name: Setup dev environment
   hosts: devmachine
+  vars_prompt:
+    - name: ssh_passphrase
+      prompt: Enter your ssh key passphrase?
   vars:
     home_dir: "{{ ansible_env.HOME }}"
   roles:
@@ -12,7 +15,8 @@
     - { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
     #- { role: java, become: yes, tags: [ 'dev', 'java' ] }
     #- { role: scala, become: yes, tags: [ 'dev', 'scala' ] }
-    #- { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
+    - { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
+    - { role: ssh, become: no, tags: [ 'dev', 'ssh' ] }
     - { role: desktop, become: yes, tags: [ 'desktop' ],
         when: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }} != ''"}
   tasks:
