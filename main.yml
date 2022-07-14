@@ -6,10 +6,11 @@
   roles:
     - { role: common, become: yes }
     - { role: zsh, become: yes, tags: [ 'dev', 'zsh' ] }
+    - { role: python, become: yes, tags: [ 'dev', 'python' ] }
     - { role: docker, become: yes, tags: [ 'dev', 'docker' ] }
     #- { role: git, become: yes, tags: [ 'dev', 'git' ] }
     #- { role: gcc, become: yes, tags: [ 'dev', 'gcc' ] }
-    #- { role: python, become: yes, tags: [ 'dev', 'python' ] }
+
     #- { role: aws, become: yes, tags: [ 'dev', 'aws' ] }
     #- { role: java, become: yes, tags: [ 'dev', 'java' ] }
 
