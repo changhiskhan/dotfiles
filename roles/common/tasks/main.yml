@@ -1,0 +1,34 @@
+- name: Show hostname
+  command: hostname
+
+- name: Install latest base packages
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+    - curl
+    - emacs
+    - git
+    - libssl-dev
+    - openssl
+    - wget
+    - gawk
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+    - lsb-release
+
+- name: link gitconfig
+  file:
+    src: "{{ playbook_dir }}/.gitconfig"
+    dest: "~/.gitconfig"
+    state: link
+  become: false
+
+- name: Upgrade and cleanup
+  apt:
+    upgrade: yes
+    autoclean: yes
+    autoremove: yes
