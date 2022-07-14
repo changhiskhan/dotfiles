@@ -31,6 +31,7 @@ conda install -c conda-forge gh  # github cli
 . docker.sh
 . terraform.sh
 . jvm.sh
+. nodejs.sh
 
 # Pip conf
 cat <<EOT >> $HOME/.config/pip/pip.conf
