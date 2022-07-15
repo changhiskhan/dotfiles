@@ -4,7 +4,6 @@
     dest: /tmp/install-miniconda.sh
     checksum: sha256:78f39f9bae971ec1ae7969f0516017f2413f17796670f7040725dd83fcff5689
     mode: 0755
-  register: download_miniconda
 
 - name: Create conda folder
   file:
@@ -12,15 +11,11 @@
     state: directory
     mode: 0755
     recurse: yes
-  register: create_conda_dir
-  when: download_miniconda.changed
 
 - name: Run the installer
   shell: |
     /tmp/install-miniconda.sh -b -u -p {{ conda_dir }}
     {{ conda_dir }}/bin/conda init zsh
-  when: (download_miniconda.changed) and (create_conda_dir.changed)
-  register: install_conda
 
 - name: ohmyzsh shows conda env
   shell: "{{ conda_dir }}/bin/conda config --set changeps1 False"
