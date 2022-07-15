@@ -10,14 +10,14 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/chang/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/ansible/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/chang/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/chang/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/ansible/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/ansible/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/chang/miniconda3/bin:$PATH"
+        export PATH="/home/ansible/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup

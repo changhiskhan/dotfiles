@@ -36,7 +36,7 @@
 
 - name: Add Docker Repository
   apt_repository:
-    repo: "deb [arch={{ arch_name.stdout }} signed-by=/etc/apt/keyrings/docker.gpg] \
+    repo: "deb [arch={{ arch_name.stdout }} signed-by=/etc/apt/trusted.gpg] \
            https://download.docker.com/linux/{{ distro_name.stdout }} \
            {{ release_name.stdout }} stable"
     state: present
@@ -67,7 +67,9 @@
 - name: Validate docker
   shell: |
     docker --version
-    docker run hello-world
+    newgrp docker << EOT
+      docker run hello-world
+    EOT
   register: docker_output
   become: false
   failed_when: docker_output.rc != 0

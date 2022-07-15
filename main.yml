@@ -9,6 +9,7 @@
     java_version: "11.0.12-open"
     scala_version: "2.13.8"
     dotfiles: "~/code/dotfiles"
+    github_token: "{{ lookup('env', 'GH_TOKEN') }}"
   roles:
     - { role: common, become: yes }
     - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }
