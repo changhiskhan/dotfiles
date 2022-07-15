@@ -15,12 +15,12 @@
       - nvidia-driver-510
       - nvidia-dkms-510
 
-- name: Refresh snap
-  become: true
+- name: Install snaps
   shell: |
     snap refresh
     snap install --classic zoom-client
     snap install --classic slack
+  become: true
 
 - name: Download Chrome
   become: false

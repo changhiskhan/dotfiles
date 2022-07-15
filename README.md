@@ -7,6 +7,7 @@ export GH_TOKEN=<github access token> (to setup ssh key)
 sudo apt update
 sudo apt install -y curl
 curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/ansible/bootstrap.sh | bash
+ansible-playbook main.yml -vv --ask-become-pass -i hosts
 ```
 
 

@@ -15,7 +15,3 @@ pushd dotfiles
 export PATH=~/.local/bin:$PATH  # for ansible galaxy
 ansible-galaxy install -r requirements.yml
 export ANSIBLE_STDOUT_CALLBACK=debug
-
-ansible-playbook main.yml --ask-become-pass \
-                          --extra-vars "dotfiles=${XDG_CONFIG_HOME:=$HOME/.config}/dotfiles" \
-                          -i hosts
