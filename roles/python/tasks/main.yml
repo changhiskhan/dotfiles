@@ -15,7 +15,6 @@
 - name: Run the installer
   shell: |
     /tmp/install-miniconda.sh -b -u -p {{ conda_dir }}
-    {{ conda_dir }}/bin/conda init zsh
 
 - name: ohmyzsh shows conda env
   shell: "{{ conda_dir }}/bin/conda config --set changeps1 False"
