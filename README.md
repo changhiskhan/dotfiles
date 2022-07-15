@@ -3,7 +3,7 @@
 The following command will clone the repo and run the setup on your localhost
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/ansible/bootstrap.sh)
+bash <(curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/main/bootstrap.sh)
 ```
 
 ## Notes

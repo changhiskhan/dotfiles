@@ -9,7 +9,7 @@ touch ~/.zsh_local
 
 mkdir -p "${XDG_CONFIG_HOME:=$HOME/.config}"
 pushd "${XDG_CONFIG_HOME:=$HOME/.config}"
-git clone -b ansible https://github.com/changhiskhan/dotfiles dotfiles
+git clone https://github.com/changhiskhan/dotfiles dotfiles
 
 pushd dotfiles
 export PATH=~/.local/bin:$PATH  # for ansible galaxy
