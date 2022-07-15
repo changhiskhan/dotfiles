@@ -23,6 +23,7 @@
     - gnupg
     - unzip
     - tar
+    - zip
 
 - name: Upgrade and cleanup
   become: true

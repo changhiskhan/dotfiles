@@ -32,9 +32,11 @@
     - name: Install sdkman and jvm
       shell: |
         curl -s "https://get.sdkman.io" | bash
-        source "{{ home_dir }}/.sdkman/bin/sdkman-init.sh"
+        . "{{ home_dir }}/.sdkman/bin/sdkman-init.sh"
         sdk install java {{ java_version }}
         sdk install sbt
         sdk install scala {{ scala_version}}
       become: false
+      args:
+        executable: /bin/bash
     - debug: msg="Current user {{ ansible_env.USER }}"
