@@ -1,0 +1,75 @@
+- name: Install required system packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+      - lsb-release
+      - gawk
+      - gnupg
+
+- name: Get distro name
+  shell: "lsb_release -si | awk '{print tolower($0)}'"
+  register: distro_name
+- debug:
+    var: distro_name
+
+- name: Get release name
+  shell: "lsb_release -cs | awk '{print tolower($0)}'"
+  register: release_name
+- debug:
+    var: release_name
+
+- name: Get arch name
+  shell: "dpkg --print-architecture"
+  register: arch_name
+- debug:
+    var: arch_name
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: "https://download.docker.com/linux/{{ distro_name.stdout }}/gpg"
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: "deb [arch={{ arch_name.stdout }} signed-by=/etc/apt/trusted.gpg] \
+           https://download.docker.com/linux/{{ distro_name.stdout }} \
+           {{ release_name.stdout }} stable"
+    state: present
+
+- name: Install docker
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: true
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+
+- name: Create docker group
+  group:
+    name: docker
+    state: present
+
+- name: Add user to group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: docker
+    append: yes
+
+- name: Validate docker
+  shell: |
+    docker --version
+    newgrp docker << EOT
+      docker run hello-world
+    EOT
+  register: docker_output
+  become: false
+  failed_when: docker_output.rc != 0

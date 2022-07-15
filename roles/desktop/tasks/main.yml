@@ -1,0 +1,36 @@
+- name: add nvidia apt repository
+  apt_repository:
+    repo: "ppa:graphics-drivers/ppa"
+    state: present
+    update_cache: yes
+
+- name: Install desktop utilities
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  vars:
+    packages:
+      - terminator
+      - nvidia-driver-510
+      - nvidia-dkms-510
+
+- name: Install snaps
+  shell: |
+    snap refresh
+    snap install --classic zoom-client
+    snap install --classic slack
+  become: true
+
+- name: Download Chrome
+  become: false
+  get_url:
+    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dest: /tmp/chrome.deb
+    mode: 0755
+  register: download_chrome
+
+- name: Install Chrome
+  apt: deb="/tmp/chrome.deb"
+  when: download_chrome.changed
+

@@ -1,0 +1,35 @@
+- name: Install latest zsh
+  apt:
+    name: zsh
+    state: latest
+  become: yes
+
+- name: Install oh my zsh
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ home_dir }}/.oh-my-zsh"
+    depth: 1
+
+- name: Install spaceship prompt
+  git:
+    repo: https://github.com/spaceship-prompt/spaceship-prompt.git
+    dest: "{{ home_dir }}/.oh-my-zsh/custom/themes/spaceship-prompt"
+    depth: 1
+
+- name: link spaceship theme
+  file:
+    dest: "{{ home_dir }}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+    src: "{{ home_dir }}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+    state: link
+
+- name: Set login shell of user {{ ansible_env.USER }} to `/bin/zsh` with `usermod`
+  shell: |
+    usermod --shell $(which zsh) {{ ansible_env.USER }}
+  changed_when: false
+  become: yes
+
+- name: link zshrc
+  file:
+    src: "{{ playbook_dir }}/.zshrc"
+    dest: "~/.zshrc"
+    state: link

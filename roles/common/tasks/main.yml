@@ -1,0 +1,30 @@
+- name: Install latest base packages
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: yes
+  become: true
+  vars:
+    packages:
+    - curl
+    - emacs
+    - git
+    - libssl-dev
+    - openssl
+    - wget
+    - gawk
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+    - lsb-release
+    - gnupg
+    - unzip
+    - tar
+    - zip
+
+- name: Upgrade and cleanup
+  become: true
+  apt:
+    upgrade: yes
+    autoclean: yes
+    autoremove: yes

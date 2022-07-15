@@ -1,0 +1,41 @@
+- name: Download Miniconda
+  get_url:
+    url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    dest: /tmp/install-miniconda.sh
+    checksum: sha256:78f39f9bae971ec1ae7969f0516017f2413f17796670f7040725dd83fcff5689
+    mode: 0755
+
+- name: Create conda folder
+  file:
+    path: "{{ conda_dir }}"
+    state: directory
+    mode: 0755
+    recurse: yes
+
+- name: Run the installer
+  shell: |
+    /tmp/install-miniconda.sh -b -u -p {{ conda_dir }}
+
+- name: ohmyzsh shows conda env
+  shell: "{{ conda_dir }}/bin/conda config --set changeps1 False"
+
+- name: Install Github CLI
+  shell: ./bin/conda install -y -c conda-forge gh
+  args:
+    chdir: "{{ conda_dir }}"
+
+- name: Configure pip
+  shell: |
+    pip config set global.trusted-host 'pypi.org pypi.python.org files.pythonhosted.org'
+  register: pip_conf
+  failed_when: pip_conf.rc != 0
+
+- name: Install venv (for poetry)
+  apt:
+    name: python3-venv
+    state: present
+  become: true
+
+- name: Install poetry
+  shell: |
+    curl -sSL https://install.python-poetry.org | python3 -

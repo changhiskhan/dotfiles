@@ -1,0 +1,19 @@
+
+- name: Download nvm
+  become: false
+  get_url:
+    url: https://raw.githubusercontent.com/creationix/nvm/master/install.sh
+    dest: /tmp/install_nvm.sh
+    mode: 0755
+
+- name: Run installer
+  shell: |
+    . ./install_nvm.sh
+    . $NVM_DIR/nvm.sh
+    nvm install --lts
+    node --version
+  args:
+    chdir: /tmp
+    executable: /bin/bash
+  register: check_nodejs
+  failed_when: check_nodejs.rc != 0
