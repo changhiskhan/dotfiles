@@ -1,3 +1,9 @@
+- name: add nvidia apt repository
+  apt_repository:
+    repo: "ppa:graphics-drivers/ppa"
+    state: present
+    update_cache: yes
+
 - name: Install desktop utilities
   apt:
     name: "{{ packages }}"
@@ -6,24 +12,15 @@
   vars:
     packages:
       - terminator
-      - nvidia-drivers-510
+      - nvidia-driver-510
       - nvidia-dkms-510
 
 - name: Refresh snap
-  command: snap refresh
-
-- name: Install snap packages
-  snap:
-    name: "{{ packages }}"
-    classic: yes
-    state: present
-  vars:
-    packages:
-    - zoom-client
-    - slack
-    - intellij-idea-ultimate
-    - pycharm-professional
-    - clion
+  become: true
+  shell: |
+    snap refresh
+    snap install --classic zoom-client
+    snap install --classic slack
 
 - name: Download Chrome
   become: false
