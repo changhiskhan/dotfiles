@@ -15,3 +15,7 @@ pushd dotfiles
 export PATH=~/.local/bin:$PATH  # for ansible galaxy
 ansible-galaxy install -r requirements.yml
 export ANSIBLE_STDOUT_CALLBACK=debug
+
+read -s -p "Enter a ssh-key passphrase: " ssh_passphrase
+ansible-playbook main.yml -vv --ask-become-pass -i hosts \
+                          --extra-vars "ssh_passphrase=$ssh_passphrase"

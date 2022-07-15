@@ -1,2 +1,1 @@
 conda_dir: "{{ home_dir }}/miniconda3"
-github_token: "{{ lookup('env', 'GH_TOKEN') }}"

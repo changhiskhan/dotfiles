@@ -25,19 +25,6 @@
   args:
     chdir: "{{ conda_dir }}"
 
-- name: Install add ssh key to gh
-  shell: |
-    ./bin/gh auth login --with-token {{ github_token }}
-    ./bin/gh ssh-key add {{ home_dir }}/.ssh/id_ed25519.pub
-  args:
-    chdir: "{{ conda_dir }}"
-  when: (github_token is defined) and (github_token|length > 0)
-  ignore_errors: true
-
-- debug:
-    msg: "Not adding SSH key to gh because GH_TOKEN was not found"
-  when: (github_token is undefined) or (github_token|length == 0)
-
 - name: Configure pip
   shell: |
     pip config set global.trusted-host 'pypi.org pypi.python.org files.pythonhosted.org'
