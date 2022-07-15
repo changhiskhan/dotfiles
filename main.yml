@@ -1,25 +1,25 @@
 ---
 - name: Setup dev environment
   hosts: devmachine
-#  vars_prompt:
-#    - name: ssh_passphrase
-#      prompt: Enter your ssh key passphrase?
+  vars_prompt:
+    - name: ssh_passphrase
+      prompt: Enter your ssh key passphrase?
   vars:
     home_dir: "{{ ansible_env.HOME }}"
-#    java_version: "11.0.12-open"
-#    scala_version: "2.13.8"
+    java_version: "11.0.12-open"
+    scala_version: "2.13.8"
     dotfiles: "~/code/dotfiles"
   roles:
     - { role: common, become: yes }
-#    - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }
-#    - { role: ssh, become: no, tags: [ 'dev', 'ssh' ] }
-#    - { role: python, become: no, tags: [ 'dev', 'python' ] }
-#    - { role: docker, become: yes, tags: [ 'dev', 'docker' ] }
-#    - { role: aws, become: yes, tags: [ 'dev', 'aws' ]}
-#    - { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
-#    - { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
-#    - { role: desktop, become: yes, tags: [ 'desktop' ],
-#        when: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }} != ''"}
+    - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }
+    - { role: ssh, become: no, tags: [ 'dev', 'ssh' ] }
+    - { role: python, become: no, tags: [ 'dev', 'python' ] }
+    - { role: docker, become: yes, tags: [ 'dev', 'docker' ] }
+    - { role: aws, become: yes, tags: [ 'dev', 'aws' ]}
+    - { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
+    - { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
+    - { role: desktop, become: yes, tags: [ 'desktop' ],
+        when: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }} != ''"}
   tasks:
     - name: link gitconfig
       file:
@@ -28,12 +28,12 @@
         state: link
       become: false
 
-#    - name: Install sdkman and jvm
-#      shell: |
-#        curl -s "https://get.sdkman.io" | bash
-#        source "{{ home_dir }}/.sdkman/bin/sdkman-init.sh"
-#        sdk install java {{ java_version }}
-#        sdk install sbt
-#        sdk install scala {{ scala_version}}
-#      become: false
+    - name: Install sdkman and jvm
+      shell: |
+        curl -s "https://get.sdkman.io" | bash
+        source "{{ home_dir }}/.sdkman/bin/sdkman-init.sh"
+        sdk install java {{ java_version }}
+        sdk install sbt
+        sdk install scala {{ scala_version}}
+      become: false
     - debug: msg="Current user {{ ansible_env.USER }}"

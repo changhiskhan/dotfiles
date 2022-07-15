@@ -5,7 +5,7 @@ The following command will clone the repo and run the setup on your localhost
 ```bash
 sudo apt update
 sudo apt install -y curl
-curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/main/bootstrap.sh | bash
+curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/ansible/bootstrap.sh | bash
 ```
 
 

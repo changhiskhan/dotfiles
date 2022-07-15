@@ -1,3 +1,8 @@
+- name: Python cryptograph
+  pip:
+    name: cryptography
+    state: present
+
 - name: Generate SSH key
   community.crypto.openssh_keypair:
     type: ed25519
