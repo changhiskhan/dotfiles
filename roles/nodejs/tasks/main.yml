@@ -7,14 +7,25 @@
     mode: 0755
 
 - name: Run installer
-  shell: |
-    . install_nvm.sh
-    . ~/.nvm/nvm.sh
-    nvm install --lts
+  shell: . ./install_nvm.sh
   args:
     chdir: /tmp
+    executable: /bin/bash
+
+- name: Install nodejs
+  shell: |
+    . ./nvm.sh
+    nvm install --lts
+  args:
+    chdir: "{{ home_dir }}/.nvm"
+    executable: /bin/bash    
 
 - name: Check nodejs
-  shell: nodejs --version
+  shell: |
+    . ./nvm.sh
+    node --version
+  args:
+    chdir: "{{ home_dir }}/.nvm"
+    executable: /bin/bash
   register: check_nodejs
   failed_when: check_nodejs.rc != 0
