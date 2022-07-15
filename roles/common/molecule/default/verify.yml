@@ -1,0 +1,12 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Does gitconfig exist
+    stat:
+      path: ~/.gitconfig
+    register: gitconfig_exists
+    failed_when: not gitconfig_exists.stat.exists
+

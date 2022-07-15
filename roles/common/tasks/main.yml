@@ -6,6 +6,7 @@
     name: "{{ packages }}"
     state: latest
     update_cache: yes
+  become: true
   vars:
     packages:
     - curl
@@ -27,12 +28,13 @@
 
 - name: link gitconfig
   file:
-    src: "{{ playbook_dir }}/.gitconfig"
+    src: "{{ dotfiles }}/.gitconfig"
     dest: "~/.gitconfig"
     state: link
   become: false
 
 - name: Upgrade and cleanup
+  become: true
   apt:
     upgrade: yes
     autoclean: yes

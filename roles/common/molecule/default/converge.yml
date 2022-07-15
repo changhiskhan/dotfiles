@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include common"
+      include_role:
+        name: "common"
+      vars:
+        dotfiles: "~/dotfiles"
+    

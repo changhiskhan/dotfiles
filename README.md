@@ -1,21 +1,17 @@
 # Setup a dev machine quickly
 
+The following command will clone the repo and run the setup on your localhost
 
-1. Download or clone this repo
-2. Setup links:
-
-```
-ln -s $THIS_REPO/.zshrc $HOME/.zshrc
-ln -s $THIS_REPO/.gitconfig $HOME/.gitconfig
-touch $HOME/.zsh_local  # non-public stuff can go here
+```bash
+sudo apt update
+sudo apt install -y curl
+curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/main/bootstrap.sh | bash
 ```
 
-3. Run bootstrap/setup.sh (if desktop then restart is required for nvidia drivers)
-4. Get AWS credentials csv file
-5. Run `bootstrap/configure.sh <ssh key email> <aws credentials csv path>`
 
+## Notes
 
-
-Remember: don't put secrets in .zshrc
-
+1. DO NOT PUT SECRETS in .zshrc
+2. Restart is required for nvidia drivers
+3. aws configure import --csv <credentials>
 

@@ -33,6 +33,14 @@
     update_cache: true
     state: latest
 
+- name: Terraform auto-complete
+  shell: |
+    terraform -install-autocomplete
+    cat <<EOT >> {{ home_dir }}/.zsh_local
+    autoload -U +X bashcompinit && bashcompinit
+    complete -o nospace -C /usr/bin/terraform terraform
+    EOT
+
 - name: Validate
   shell: terraform -version
   register: install_terraform
