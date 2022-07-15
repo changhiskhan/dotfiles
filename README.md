@@ -3,13 +3,14 @@
 The following command will clone the repo and run the setup on your localhost
 
 ```bash
-curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/ansible/bootstrap.sh | bash
+bash <(curl -s https://raw.githubusercontent.com/changhiskhan/dotfiles/ansible/bootstrap.sh)
 ```
-
 
 ## Notes
 
-1. DO NOT PUT SECRETS in .zshrc
+DO NOT PUT SECRETS in .zshrc
+
+## Post install
 2. Restart is required for nvidia drivers
 3. aws configure import --csv <credentials>
 4. gh auth login --with-token $GH_TOKEN
