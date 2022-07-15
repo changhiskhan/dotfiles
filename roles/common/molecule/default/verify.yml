@@ -4,9 +4,22 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Does gitconfig exist
-    stat:
-      path: ~/.gitconfig
-    register: gitconfig_exists
-    failed_when: not gitconfig_exists.stat.exists
+  - name: Does git exist
+    shell: git --version
+    register: git_version
+    failed_when: git_version.rc != 0
 
+  - name: Does emacs exist
+    shell: emacs --version
+    register: emacs_version
+    failed_when: emacs_version.rc != 0
+
+  - name: Does curl exist
+    shell: curl --version
+    register: curl_version
+    failed_when: curl_version.rc != 0
+
+  - name: Does wget exist
+    shell: wget --version
+    register: wget_version
+    failed_when: wget_version.rc != 0

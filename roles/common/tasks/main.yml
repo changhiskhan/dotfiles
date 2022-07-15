@@ -23,15 +23,6 @@
     - gnupg
     - unzip
     - tar
-    - build-essential
-    - cmake
-
-- name: link gitconfig
-  file:
-    src: "{{ dotfiles }}/.gitconfig"
-    dest: "~/.gitconfig"
-    state: link
-  become: false
 
 - name: Upgrade and cleanup
   become: true
