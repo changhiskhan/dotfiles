@@ -4,6 +4,11 @@
     state: present
     extra_args: "--user"
 
+- name: Make sure .ssh exists
+  path:
+    name: "{{ home_dir }}/.ssh"
+    state: directory
+
 - name: Generate SSH key
   community.crypto.openssh_keypair:
     type: ed25519
