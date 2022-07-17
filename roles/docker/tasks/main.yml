@@ -1,4 +1,5 @@
 - name: Install required system packages
+  become: true
   apt:
     name: "{{ packages }}"
     state: present
@@ -30,11 +31,13 @@
     var: arch_name
 
 - name: Add Docker GPG apt Key
+  become: true
   apt_key:
     url: "https://download.docker.com/linux/{{ distro_name.stdout }}/gpg"
     state: present
 
 - name: Add Docker Repository
+  become: true
   apt_repository:
     repo: "deb [arch={{ arch_name.stdout }} signed-by=/etc/apt/trusted.gpg] \
            https://download.docker.com/linux/{{ distro_name.stdout }} \
@@ -42,6 +45,7 @@
     state: present
 
 - name: Install docker
+  become: true
   apt:
     name: "{{ packages }}"
     state: latest
@@ -54,22 +58,24 @@
       - docker-compose-plugin
 
 - name: Create docker group
+  become: true
   group:
     name: docker
     state: present
 
 - name: Add user to group
+  become: true
   user:
-    name: "{{ ansible_env.USER }}"
+    name: "{{ ansible_user }}"
     groups: docker
     append: yes
 
 - name: Validate docker
+  become: false
   shell: |
     docker --version
     newgrp docker << EOT
       docker run hello-world
     EOT
   register: docker_output
-  become: false
   failed_when: docker_output.rc != 0

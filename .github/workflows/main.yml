@@ -5,6 +5,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: "0 0 * * 1"
 
 jobs:
   molecule:
@@ -19,3 +21,9 @@ jobs:
           molecule_options: --debug --verbose "2"
           molecule_command: test
           molecule_working_dir: '${{ github.repository }}/roles/common'
+      - name: Test python role
+        uses: gofrolist/molecule-action@v2
+        with:
+          molecule_options: --debug --verbose "2"
+          molecule_command: test
+          molecule_working_dir: '${{ github.repository }}/roles/python'

@@ -10,6 +10,14 @@
     scala_version: "2.13.8"
     dotfiles: "{{ lookup('env', 'XDG_CONFIG_HOME', default='~/.config') }}/dotfiles"
     is_desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
+    ansible_user: "{{ ansible_user | lookup('env', 'USER') }}"
+  pre_tasks:
+    - name: hostname
+      command: hostname
+    - name: user
+      command: echo ${USER}
+    - debug:
+        msg: "ansible_user is {{ ansible_user }}"
   roles:
     - { role: common, become: yes }
     - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }

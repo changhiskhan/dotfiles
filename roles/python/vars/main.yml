@@ -1,1 +1,1 @@
-conda_dir: "{{ home_dir }}/miniconda3"
+conda_dir: "~/miniconda3"
