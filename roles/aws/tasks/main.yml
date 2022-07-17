@@ -1,20 +1,33 @@
-- name: Download AWS CLI zip
+- name: Has AWS CLI
   become: false
-  get_url:
-    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
-    dest: /tmp/awscliv2.zip
-    mode: 0755
-  register: download_awscli
+  shell: aws --version
+  register: has_aws
+  changed_when: false
+  failed_when: false
 
-- name: Unzip AWS CLI
-  shell: |
-    unzip awscliv2.zip
-    ./aws/install --update
-  args:
-    chdir: /tmp
-  when: download_awscli.changed
+- name: Install AWS
+  become: true
+  when: has_aws.rc != 0
+  vars:
+    download_dir: "/tmp"
+  block:
+    - name: Make sure we have unzip
+      apt:
+        pkg: unzip
+        state: present
+    - name: Unzip
+      unarchive:
+        src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: "{{ download_dir }}"
+        remote_src: yes
+    - name: Install
+      shell: ./aws/install
+      args:
+        chdir: "{{ download_dir }}"
 
-- name: Check AWS CLI
+- name: Verify AWS CLI exists
+  become: false
   shell: aws --version
   register: check_aws
   failed_when: check_aws.rc != 0
+  changed_when: false
