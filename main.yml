@@ -5,12 +5,12 @@
     - name: ssh_passphrase
       prompt: Enter your ssh key passphrase?
   vars:
-    home_dir: "{{ ansible_env.HOME }}"
+    home_dir: "{{ lookup('env', 'HOME') }}"
     java_version: "11.0.12.7.1-amzn"  # corretto
     scala_version: "2.13.8"
-    dotfiles: "{{ lookup('env', 'XDG_CONFIG_HOME', default='~/.config') }}/dotfiles"
+    dotfiles: "."
     is_desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
-    ansible_user: "{{ ansible_user | lookup('env', 'USER') }}"
+    ansible_user: "{{ lookup('env', 'USER') }}"
   pre_tasks:
     - name: hostname
       command: hostname
@@ -31,19 +31,16 @@
   tasks:
     - name: link gitconfig
       file:
-        src: "{{ dotfiles }}/.gitconfig"
+        src: "{{ playbook_dir }}/.gitconfig"
         dest: "~/.gitconfig"
         state: link
-      become: false
-
-    - name: Install sdkman and jvm
+      
+    - name: Install sdkman
       shell: |
-        curl -s "https://get.sdkman.io" | bash
-        . "{{ home_dir }}/.sdkman/bin/sdkman-init.sh"
+        (echo $SDMAN_DIR) || (curl -s "https://get.sdkman.io" | bash)
+        . "$SDKMAN_DIR/bin/sdkman-init.sh"
         sdk install java {{ java_version }}
         sdk install sbt
         sdk install scala {{ scala_version}}
-      become: false
       args:
         executable: /bin/bash
-    - debug: msg="Current user {{ ansible_env.USER }}"
