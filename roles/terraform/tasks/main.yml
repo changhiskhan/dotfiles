@@ -1,47 +1,58 @@
+- name: Make sure we have requirements
+  apt:
+    pkg:
+      - lsb_release
+      - gnupg
+      - software-properties-common
+    state: present
+    update_cache: true
+
 - name: Get distro name
   shell: "lsb_release -si | awk '{print tolower($0)}'"
   register: distro_name
-- debug:
-    var: distro_name
+  changed_when: false
 
 - name: Get release name
   shell: "lsb_release -cs | awk '{print tolower($0)}'"
   register: release_name
-- debug:
-    var: release_name
+  changed_when: false
 
 - name: Get arch name
   shell: "dpkg --print-architecture"
   register: arch_name
-- debug:
-    var: arch_name
+  changed_when: false
 
-- name: Add hashicorp GPG apt Key
-  apt_key:
-    url: "https://apt.releases.hashicorp.com/gpg"
-    state: present
-
-- name: Add hashicorp repository
-  apt_repository:
-    repo: "deb [arch={{ arch_name.stdout }}] \
-           https://apt.releases.hashicorp.com {{ release_name.stdout }} main"
-    state: present
-
-- name: Install terraform
-  apt:
-    name: terraform
-    update_cache: true
-    state: latest
-
-- name: Terraform auto-complete
-  shell: |
-    terraform -install-autocomplete
-    cat <<EOT >> {{ home_dir }}/.zsh_local
-    autoload -U +X bashcompinit && bashcompinit
-    complete -o nospace -C /usr/bin/terraform terraform
-    EOT
+- name: Install terraform from hashicorp apt repo
+  become: true
+  vars:
+    hashicorp_keyring: "/etc/apt/trusted.gpg.d/hashicorp.gpg"
+  block:
+    - name: Add hashicorp GPG apt Key
+      apt_key:
+        url: "https://apt.releases.hashicorp.com/gpg"
+        keyring: "{{ hashicorp_keyring }}"
+        state: present
+    - name: Add hashicorp repository
+      apt_repository:
+        repo: "deb [arch={{ arch_name.stdout }} signed-by={{ hashicorp_keyring }}] https://apt.releases.hashicorp.com {{ release_name.stdout }} main"
+        state: present
+    - name: Install terraform
+      apt:
+        name: terraform
+        update_cache: true
+        state: present
+      register: terraform_install
+    - name: Terraform auto-complete
+      when: terraform_install.changed
+      shell: |
+        terraform -install-autocomplete
+        cat <<EOT >> {{ home_dir }}/.zsh_local
+        autoload -U +X bashcompinit && bashcompinit
+        complete -o nospace -C /usr/bin/terraform terraform
+        EOT
 
 - name: Validate
   shell: terraform -version
-  register: install_terraform
-  failed_when: install_terraform.rc != 0
+  register: has_terraform
+  failed_when: has_terraform.rc != 0
+  changed_when: false

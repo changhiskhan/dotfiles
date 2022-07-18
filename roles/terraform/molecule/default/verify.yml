@@ -1,0 +1,11 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  become: false
+  tasks:
+  - name: Verify terraform exists
+    shell: terraform -version
+    register: has_terraform
+    failed_when: has_terraform.rc != 0

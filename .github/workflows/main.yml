@@ -26,3 +26,9 @@ jobs:
       - name: Test python role
         working-directory: "${{ github.repository }}/roles/python"
         run: molecule --debug -vv test
+      - name: Test AWS role
+        working-directory: "${{ github.repository }}/roles/aws"
+        run: molecule --debug -vv test
+      - name: Test Terraform role
+        working-directory: "${{ github.repository }}/roles/terraform"
+        run: molecule --debug -vv test

@@ -15,3 +15,10 @@ DO NOT PUT SECRETS in .zshrc
 3. aws configure import --csv <credentials>
 4. gh auth login --with-token $GH_TOKEN
 5. gh ssh-key add ~/.ssh/id_ed25519.pub
+
+
+TODOs:
+
+- where to put conda init?
+- where to put stuff like conda config changeps1 false?
+- terraform autocomplete?
