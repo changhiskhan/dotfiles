@@ -20,5 +20,5 @@ DO NOT PUT SECRETS in .zshrc
 TODOs:
 
 - where to put conda init?
-- where to put stuff like conda config changeps1 false?
+- conda config --set changeps1 False
 - terraform autocomplete?
