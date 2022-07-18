@@ -1,7 +1,8 @@
 - name: Make sure we have requirements
+  become: true
   apt:
     pkg:
-      - lsb_release
+      - lsb-release
       - gnupg
       - software-properties-common
     state: present

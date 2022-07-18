@@ -16,5 +16,6 @@ provisioner:
     host_vars:
       ubuntu:
         ansible_user: "ansible"
+        home_dir: "{{ ansible_env.HOME }}"
 verifier:
   name: ansible
