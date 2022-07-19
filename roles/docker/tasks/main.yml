@@ -44,31 +44,40 @@
            {{ release_name.stdout }} stable"
     state: present
 
-- name: Install docker
-  become: true
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    update_cache: true
-  vars:
-    packages:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-compose-plugin
+- name: Has docker
+  become: false
+  shell: |
+    docker --version
+  register: has_docker
+  failed_when: false
+  changed_when: false
 
-- name: Create docker group
+- name: Install and configure docker
   become: true
-  group:
-    name: docker
-    state: present
+  when: has_docker.rc != 0
+  block:
+    - name: Install packages
+      apt:
+        name: "{{ packages }}"
+        state: latest
+        update_cache: true
+      vars:
+        packages:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
 
-- name: Add user to group
-  become: true
-  user:
-    name: "{{ ansible_user }}"
-    groups: docker
-    append: yes
+    - name: Create docker group
+      group:
+        name: docker
+        state: present
+
+    - name: Add user to group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
 
 - name: Validate docker
   become: false

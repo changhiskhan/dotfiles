@@ -1,1 +1,1 @@
-conda_dir: "~/miniconda3"
+conda_dir: "{{ ansible_env.HOME }}/miniconda3"
