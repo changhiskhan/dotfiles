@@ -1,5 +1,6 @@
 ---
 - name: Setup dev environment
+  gather_facts: true
   hosts: devmachine
   vars_prompt:
     - name: ssh_passphrase

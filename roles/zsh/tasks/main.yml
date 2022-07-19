@@ -22,9 +22,9 @@
     src: "{{ home_dir }}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
     state: link
 
-- name: Set login shell of user {{ ansible_user }} to `/bin/zsh` with `usermod`
+- name: Set login shell to zsh with `usermod`
   shell: |
-    usermod --shell $(which zsh) {{ ansible_user }}
+    usermod --shell $(which zsh) $USER
   changed_when: false
   become: yes
 
