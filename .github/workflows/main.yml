@@ -20,11 +20,14 @@ jobs:
           python-version: '3.9'
       - name: Install ansible and molecule
         run: pip install ansible molecule[docker]
-      - name: Test common role
-        working-directory: "${{ github.repository }}/roles/common"
+      - name: Test ssh role
+        working-directory: "${{ github.repository }}/roles/ssh"
         run: molecule --debug -vv test
       - name: Test python role
         working-directory: "${{ github.repository }}/roles/python"
+        run: molecule --debug -vv test
+      - name: Test common role
+        working-directory: "${{ github.repository }}/roles/common"
         run: molecule --debug -vv test
       - name: Test AWS role
         working-directory: "${{ github.repository }}/roles/aws"

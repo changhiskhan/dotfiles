@@ -17,5 +17,6 @@ provisioner:
       ubuntu:
         ansible_user: "ansible"
         home_dir: "{{ ansible_env.HOME }}"
+        ssh_passphrase: "test"
 verifier:
   name: ansible

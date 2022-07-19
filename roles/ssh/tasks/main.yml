@@ -1,3 +1,10 @@
+- name: Ensure pip
+  become: true
+  apt:
+    pkg:
+      - python3-pip
+    state: present
+
 - name: Python cryptograph
   pip:
     name: cryptography

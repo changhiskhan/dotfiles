@@ -73,7 +73,7 @@
 
 - name: Install poetry
   when: has_poetry.rc != 0
-  become: false  
+  become: false
   block:
     - name: Download poetry
       get_url:
