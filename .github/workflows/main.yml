@@ -20,6 +20,9 @@ jobs:
           python-version: '3.9'
       - name: Install ansible and molecule
         run: pip install ansible molecule[docker]
+      - name: Test docker role
+        working-directory: "${{ github.repository }}/roles/docker"
+        run: molecule --debug -vv test
       - name: Test ssh role
         working-directory: "${{ github.repository }}/roles/ssh"
         run: molecule --debug -vv test

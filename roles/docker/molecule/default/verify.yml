@@ -1,0 +1,11 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  become: false
+  tasks:
+  - name: Docker is on the path
+    shell: docker --version
+    register: docker_version
+    failed_when: docker_version.rc != 0
