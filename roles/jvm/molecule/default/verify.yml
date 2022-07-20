@@ -4,6 +4,8 @@
   hosts: all
   gather_facts: true
   become: false
+  roles:
+    - { role: shell }
   vars_files: ../../vars/main.yml
   tasks:
     - name: sdkman is installed
@@ -12,32 +14,15 @@
       register: has_sdkman
       failed_when: not has_sdkman.stat.exists
     - name: java is on the path
-      shell: |
-        . {{ sdkman_dir }}/bin/sdkman-init.sh
-        java --version
+      shell: "{{ shell }} -elc 'java --version'"
       register: java_version
       failed_when: java_version.rc != 0
-      environment:
-        SDKMAN_DIR: "{{ sdkman_dir }}"
-      args:
-        executable: /bin/bash
     - name: sbt is on the path
-      shell: |
-        . {{ sdkman_dir }}/bin/sdkman-init.sh
-        which sbt
-      register: has_sbt
-      failed_when: has_sbt.rc != 0
-      environment:
-        SDKMAN_DIR: "{{ sdkman_dir }}"
-      args:
-        executable: /bin/bash
+      shell: "{{ shell }} -elc 'which sbt'"
+      register: sbt_installed
+      failed_when: sbt_installed.rc != 0
     - name: scala is on the path
-      shell: |
-        . {{ sdkman_dir }}/bin/sdkman-init.sh
-        scala --version
+      shell: "{{ shell }} -elc 'scala --version'"
       register: scala_version
       failed_when: scala_version.rc != 0
-      environment:
-        SDKMAN_DIR: "{{ sdkman_dir }}"
-      args:
-        executable: /bin/bash
+
