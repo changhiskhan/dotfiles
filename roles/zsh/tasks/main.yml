@@ -27,27 +27,3 @@
     usermod --shell $(which zsh) $USER
   changed_when: false
   become: yes
-
-- name: has zshrc already
-  stat:
-    path: "~/.zshrc"
-  failed_when: false
-  changed_when: false
-  register: has_zshrc
-
-- name: backup existing zshrc
-  when: has_zshrc.stat.exists
-  block:
-    - copy:
-        remote_src: true
-        src: "~/.zshrc"
-        dest: "~/zshrc_bak"
-    - file:
-        path: "~/.zshrc"
-        state: absent
-        
-- name: link zshrc
-  file:
-    src: "{{ playbook_dir }}/.zshrc"
-    dest: "~/.zshrc"
-    state: link
