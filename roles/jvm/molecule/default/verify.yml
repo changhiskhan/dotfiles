@@ -1,0 +1,43 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: true
+  become: false
+  vars_files: ../../vars/main.yml
+  tasks:
+    - name: sdkman is installed
+      stat:
+        path: "{{ sdkman_dir }}/bin/sdkman-init.sh"
+      register: has_sdkman
+      failed_when: not has_sdkman.stat.exists
+    - name: java is on the path
+      shell: |
+        . {{ sdkman_dir }}/bin/sdkman-init.sh
+        java --version
+      register: java_version
+      failed_when: java_version.rc != 0
+      environment:
+        SDKMAN_DIR: "{{ sdkman_dir }}"
+      args:
+        executable: /bin/bash
+    - name: sbt is on the path
+      shell: |
+        . {{ sdkman_dir }}/bin/sdkman-init.sh
+        which sbt
+      register: has_sbt
+      failed_when: has_sbt.rc != 0
+      environment:
+        SDKMAN_DIR: "{{ sdkman_dir }}"
+      args:
+        executable: /bin/bash
+    - name: scala is on the path
+      shell: |
+        . {{ sdkman_dir }}/bin/sdkman-init.sh
+        scala --version
+      register: scala_version
+      failed_when: scala_version.rc != 0
+      environment:
+        SDKMAN_DIR: "{{ sdkman_dir }}"
+      args:
+        executable: /bin/bash

@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include jvm"
+      include_role:
+        name: "jvm"

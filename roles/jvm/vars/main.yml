@@ -1,4 +1,4 @@
 download_dir: "/tmp"
-sdkman_dir: "{{ ansible_env.HOME }}/.sdk"
+sdkman_dir: "{{ ansible_env.HOME }}/.sdkman"
 java_version: "11.0.12.7.1-amzn"  # corretto
 scala_version: "2.13.8"
