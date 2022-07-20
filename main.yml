@@ -7,8 +7,6 @@
       prompt: Enter your ssh key passphrase?
   vars:
     home_dir: "{{ lookup('env', 'HOME') }}"
-    java_version: "11.0.12.7.1-amzn"  # corretto
-    scala_version: "2.13.8"
     dotfiles: "."
     is_desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
     ansible_user: "{{ lookup('env', 'USER') }}"
@@ -28,6 +26,7 @@
     - { role: aws, become: yes, tags: [ 'dev', 'aws' ]}
     - { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
     - { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
+    - { role: jvm, become: no, tags: ['dev', 'jvm'] }
     - { role: desktop, become: yes, tags: [ 'desktop' ], when: "(is_desktop is defined) and (is_desktop|length>0)"}
   tasks:
     - name: link gitconfig
@@ -35,13 +34,3 @@
         src: "{{ playbook_dir }}/.gitconfig"
         dest: "~/.gitconfig"
         state: link
-      
-    - name: Install sdkman
-      shell: |
-        (echo $SDMAN_DIR) || (curl -s "https://get.sdkman.io" | bash)
-        . "$SDKMAN_DIR/bin/sdkman-init.sh"
-        sdk install java {{ java_version }}
-        sdk install sbt
-        sdk install scala {{ scala_version}}
-      args:
-        executable: /bin/bash
