@@ -8,41 +8,28 @@
   file:
     path:
       - "{{ download_dir }}"
-      - "{{ nvm_dir }}"
     recurse: true
     state: directory
 
 - name: nvm is installed
-  stat:
-    path: "$NVM_DIR/nvm.sh"
+  shell: "{{ shell }} -elc 'nvm --version'"
   register: has_nvm
   failed_when: false
   changed_when: false
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"
 
 - name: Install nvm
-  when: not has_nvm.stat.exists
+  when: has_nvm.rc != 0
   block:
   - name: Download nvm
-    become: false
     get_url:
       url: https://raw.githubusercontent.com/creationix/nvm/master/install.sh
       dest: "{{ download_dir }}/install-nvm.sh"
       mode: 0755
   - name: Run installer
-    shell: "{{ download_dir }}/install-nvm.sh"
-    args:
-      executable: /bin/bash
-    environment:
-      NVM_DIR: "{{ nvm_dir }}"
+    shell: "{{ shell }} -elc '{{ download_dir }}/install-nvm.sh'"
 
 - name: Install nodejs
-  shell: |
-    . $NVM_DIR/nvm.sh
-    nvm install --lts
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"
+  shell: "{{ shell }} -elc 'nvm install --lts'"
   register: node_installed
   changed_when: "'already installed' not in node_installed.stderr"
 

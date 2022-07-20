@@ -1,9 +1,9 @@
 - name: Install latest base packages
+  become: true
   apt:
     name: "{{ packages }}"
     state: latest
     update_cache: yes
-  become: true
   vars:
     packages:
     - curl
