@@ -22,6 +22,7 @@ jobs:
         run: pip install ansible molecule[docker]
       - name: Test nodejs role
         working-directory: "${{ github.repository }}/roles/nodejs"
+        run: molecule --debug -vv test
       - name: Test docker role
         working-directory: "${{ github.repository }}/roles/docker"
         run: molecule --debug -vv test
