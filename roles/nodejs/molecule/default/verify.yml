@@ -1,0 +1,23 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: true
+  become: false
+  vars_files: ../../vars/main.yml
+  tasks:
+    - name: nvm is installed
+      stat:
+        path: "$NVM_DIR/nvm.sh"
+      register: has_nvm
+      failed_when: not has_nvm.stat.exists
+      environment:
+        NVM_DIR: "{{ nvm_dir }}"
+    - name: nodejs is on the path
+      shell: |
+        . $NVM_DIR/nvm.sh
+        node --version
+      register: node_version
+      failed_when: node_version.rc != 0
+      environment:
+        NVM_DIR: "{{ nvm_dir }}"

@@ -1,0 +1,2 @@
+download_dir: "/tmp"
+nvm_dir: "{{ ansible_env.HOME }}/.nvm"
