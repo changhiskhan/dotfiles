@@ -27,7 +27,7 @@ source $HOME/.zsh_local
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 if [ -z "$SDKMAN_DIR" ]; then
-    export SDKMAN_DIR="$HOME/.sdkman"
+    export SDKMAN_DIR="$HOME/.sdk"
     [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 fi
 

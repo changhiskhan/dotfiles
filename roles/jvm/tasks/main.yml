@@ -1,0 +1,78 @@
+- name: Ensure packages
+  become: true
+  apt:
+    pkg:
+      - curl
+      - unzip
+      - zip
+    state: present
+    update_cache: true
+
+- name: Ensure dirs
+  file:
+    path:
+      - "{{ download_dir }}"
+      - "{{ sdkman_dir }}"
+    recurse: true
+    state: directory
+
+- name: Is sdkman already installed?
+  stat:
+    path: "{{ sdkman_dir }}/bin/sdkman-init.sh"
+  register: has_sdkman
+  failed_when: false
+  changed_when: false
+
+- name: Install sdkman if needed
+  when: not has_sdkman.stat.exists
+  block:
+    - name: Download sdkman
+      become: false
+      get_url:
+        url: "https://get.sdkman.io"
+        dest: "{{ download_dir }}/install-sdkman.sh"
+        mode: 0755
+    - name: Run installer
+      shell: "{{ download_dir }}/install-sdkman.sh"
+      args:
+        executable: /bin/bash
+      environment:
+        SDKMAN_DIR: "{{ sdkman_dir }}"
+
+- name: Install Java
+  shell: |
+    . {{ sdkman_dir }}/bin/sdkman-init.sh
+    sdk install java {{ java_version }}
+  register: java_installed
+  changed_when: "'already installed' not in java_installed.stdout"
+  environment:
+    SDKMAN_DIR: "{{ sdkman_dir }}"
+  args:
+    executable: /bin/bash
+
+- name: Install sbt
+  shell: |
+    . {{ sdkman_dir }}/bin/sdkman-init.sh
+    sdk install sbt
+  register: sbt_installed
+  changed_when: "'already installed' not in sbt_installed.stdout"
+  environment:
+    SDKMAN_DIR: "{{ sdkman_dir }}"
+  args:
+    executable: /bin/bash
+
+- name: Install Scala
+  shell: |
+    . {{ sdkman_dir }}/bin/sdkman-init.sh
+    sdk install scala {{ scala_version }}
+  register: scala_installed
+  changed_when: "'already installed' not in scala_installed.stdout"
+  environment:
+    SDKMAN_DIR: "{{ sdkman_dir }}"
+  args:
+    executable: /bin/bash
+
+- name: Remove installer
+  file:
+    path: "{{ download_dir }}/install-sdkman.sh"
+    state: absent
