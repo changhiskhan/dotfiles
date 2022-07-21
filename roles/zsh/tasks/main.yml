@@ -22,32 +22,25 @@
     src: "{{ home_dir }}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
     state: link
 
-- name: Set login shell to zsh with `usermod`
-  shell: |
-    usermod --shell $(which zsh) $USER
+- name: Find zsh
+  shell: which zsh
+  register: which_zsh
+  failed_when: which_zsh.rc != 0
   changed_when: false
-  become: yes
 
-- name: has zshrc already
-  stat:
-    path: "~/.zshrc"
-  failed_when: false
-  changed_when: false
-  register: has_zshrc
-
-- name: backup existing zshrc
-  when: has_zshrc.stat.exists
+- name: Change shell
+  become: true
   block:
-    - copy:
-        remote_src: true
-        src: "~/.zshrc"
-        dest: "~/zshrc_bak"
-    - file:
-        path: "~/.zshrc"
-        state: absent
-        
-- name: link zshrc
-  file:
-    src: "{{ playbook_dir }}/.zshrc"
-    dest: "~/.zshrc"
-    state: link
+    - name: Ensure user
+      user:
+        name: "{{ ansible_user }}"
+      register: user
+      check_mode: true
+      changed_when: false
+      failed_when: user.state != "present"
+
+    - name: Change shell to zsh
+      user:
+        name: "{{ ansible_user }}"
+        state: present
+        shell: "{{ which_zsh.stdout }}"

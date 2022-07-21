@@ -1,0 +1,14 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - assert:
+      that:
+        - shell_type | length > 0
+        - user.shell | length > 0
+  - name: check the user shell works
+    shell: "{{ shell }} -ilc 'echo $SHELL'"
+    register: output
+    failed_when: output.split('/')[-1] != shell_type

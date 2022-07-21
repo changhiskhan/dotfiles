@@ -4,20 +4,15 @@
   hosts: all
   gather_facts: true
   become: false
+  roles:
+    - { role: shell }
   vars_files: ../../vars/main.yml
   tasks:
     - name: nvm is installed
-      stat:
-        path: "$NVM_DIR/nvm.sh"
+      shell: "{{ shell }} -elc 'nvm --version'"
       register: has_nvm
-      failed_when: not has_nvm.stat.exists
-      environment:
-        NVM_DIR: "{{ nvm_dir }}"
+      failed_when: has_nvm.rc != 0
     - name: nodejs is on the path
-      shell: |
-        . $NVM_DIR/nvm.sh
-        node --version
-      register: node_version
-      failed_when: node_version.rc != 0
-      environment:
-        NVM_DIR: "{{ nvm_dir }}"
+      shell: "{{ shell }} -elc 'nvm install --lts'"
+      register: node_installed
+      failed_when: "'already installed' not in node_installed.stderr"

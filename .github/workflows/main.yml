@@ -11,6 +11,9 @@ on:
 jobs:
   molecule:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        role: [zsh, jvm, nodejs, docker, ssh, python, common, aws, terraform]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -20,27 +23,6 @@ jobs:
           python-version: '3.9'
       - name: Install ansible and molecule
         run: pip install ansible molecule[docker]
-      - name: Test jvm role
-        working-directory: "${{ github.repository }}/roles/jvm"
-        run: molecule --debug -vv test
-      - name: Test nodejs role
-        working-directory: "${{ github.repository }}/roles/nodejs"
-        run: molecule --debug -vv test
-      - name: Test docker role
-        working-directory: "${{ github.repository }}/roles/docker"
-        run: molecule --debug -vv test
-      - name: Test ssh role
-        working-directory: "${{ github.repository }}/roles/ssh"
-        run: molecule --debug -vv test
-      - name: Test python role
-        working-directory: "${{ github.repository }}/roles/python"
-        run: molecule --debug -vv test
-      - name: Test common role
-        working-directory: "${{ github.repository }}/roles/common"
-        run: molecule --debug -vv test
-      - name: Test AWS role
-        working-directory: "${{ github.repository }}/roles/aws"
-        run: molecule --debug -vv test
-      - name: Test Terraform role
-        working-directory: "${{ github.repository }}/roles/terraform"
+      - name: Test ${{ matrix.role }} role
+        working-directory: "${{ github.repository }}/roles/${{ matrix.role }}"
         run: molecule --debug -vv test
