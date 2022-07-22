@@ -34,43 +34,25 @@
         mode: 0755
     - name: Run installer
       shell: "{{ download_dir }}/install-sdkman.sh"
-      args:
-        executable: /bin/bash
       environment:
         SDKMAN_DIR: "{{ sdkman_dir }}"
+      args:
+        executable: bash
 
-- name: Install Java
+- name: Install SDKs
   shell: |
     . {{ sdkman_dir }}/bin/sdkman-init.sh
-    sdk install java {{ java_version }}
-  register: java_installed
-  changed_when: "'already installed' not in java_installed.stdout"
+    sdk install {{ item.sdk }} {{ item.version }}
+  register: sdk_installed
+  changed_when: "'already installed' not in sdk_installed.stdout"
+  args:
+    executable: bash
   environment:
     SDKMAN_DIR: "{{ sdkman_dir }}"
-  args:
-    executable: /bin/bash
-
-- name: Install sbt
-  shell: |
-    . {{ sdkman_dir }}/bin/sdkman-init.sh
-    sdk install sbt
-  register: sbt_installed
-  changed_when: "'already installed' not in sbt_installed.stdout"
-  environment:
-    SDKMAN_DIR: "{{ sdkman_dir }}"
-  args:
-    executable: /bin/bash
-
-- name: Install Scala
-  shell: |
-    . {{ sdkman_dir }}/bin/sdkman-init.sh
-    sdk install scala {{ scala_version }}
-  register: scala_installed
-  changed_when: "'already installed' not in scala_installed.stdout"
-  environment:
-    SDKMAN_DIR: "{{ sdkman_dir }}"
-  args:
-    executable: /bin/bash
+  with_items:
+    - { sdk: 'java', version: "{{ java_version }}"}
+    - { sdk: 'sbt', version: "" }
+    - { sdk: 'scala', version: "{{ scala_version }}"}
 
 - name: Remove installer
   file:
