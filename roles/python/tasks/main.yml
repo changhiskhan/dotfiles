@@ -15,8 +15,8 @@
       mode: 0755
   - name: Run the installer
     shell: "{{ shell }} -elc '/tmp/install-miniconda.sh -b -u -p {{ conda_dir }}'"
-
-      {{ conda_dir }}/bin/conda init
+  - name: Run init
+    shell: "{{ shell }} -elc 'conda init {{ shell }}'"
 
 - name: Github CLI
   block:

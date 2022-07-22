@@ -29,14 +29,14 @@
     user:
       name: "{{ ansible_user }}"
     check_mode: true
-    diff: false
-    failed_when: user.state != "present"
+    register: user
+    failed_when: user.state != 'present'
 
   - name: Find zsh
     shell: which zsh
     register: which_zsh
     failed_when: which_zsh.rc != 0
-    diff: false
+    changed_when: false
 
   - name: Change shell to zsh
     user:
