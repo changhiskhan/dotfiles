@@ -8,17 +8,18 @@
   file:
     path:
       - "{{ download_dir }}"
+      - "{{ nvm_dir }}"
     recurse: true
     state: directory
 
 - name: nvm is installed
-  shell: "{{ shell }} -elc 'nvm --version'"
+  stat:
+    path: "{{ nvm_dir }}/nvm.sh"
+  check_mode: true
   register: has_nvm
-  failed_when: false
-  changed_when: false
 
 - name: Install nvm
-  when: has_nvm.rc != 0
+  when: not has_nvm.stat.exists
   block:
   - name: Download nvm
     get_url:
@@ -26,12 +27,22 @@
       dest: "{{ download_dir }}/install-nvm.sh"
       mode: 0755
   - name: Run installer
-    shell: "{{ shell }} -elc '{{ download_dir }}/install-nvm.sh'"
+    shell: "{{ download_dir }}/install-nvm.sh"
+    args:
+      executable: "{{ shell }}"
+    environment:
+      NVM_DIR: "{{ nvm_dir }}"
 
 - name: Install nodejs
-  shell: "{{ shell }} -elc 'nvm install --lts'"
+  shell: |
+    . $NVM_DIR/nvm.sh
+    nvm install --lts
   register: node_installed
   changed_when: "'already installed' not in node_installed.stderr"
+  args:
+    executable: "{{ shell }}"
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
 
 - name: Remove installer
   file:
