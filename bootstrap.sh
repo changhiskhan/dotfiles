@@ -19,7 +19,8 @@ if sudo -n true 2> /dev/null; then
     # gh auth git-credential
     # AWS creds using secrets
 else
-    read -s -p "Enter a ssh-key passphrase: " ssh_passphrase
-    ansible-playbook main.yml -vv --ask-become-pass -i hosts \
-                     --extra-vars "ssh_passphrase=$ssh_passphrase"
+    set -i
+    ansible-playbook main.yml -vv \
+                              --ask-become-pass \
+                              -i inventory/hosts
 fi

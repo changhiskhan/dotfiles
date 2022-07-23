@@ -33,7 +33,7 @@
   block:
     - name: Ensure user
       user:
-        name: "{{ ansible_env.USER }}"
+        name: "{{ ansible_user }}"
       register: user
       check_mode: true
       changed_when: false
@@ -41,6 +41,6 @@
 
     - name: Change shell to zsh
       user:
-        name: "{{ ansible_env.USER }}"
+        name: "{{ ansible_user }}"
         state: present
         shell: "{{ which_zsh.stdout }}"

@@ -7,6 +7,8 @@
   roles:
     - { role: shell }
   vars_files: ../../vars/main.yml
+  vars:
+    ansible_user: "ansible"
   tasks:
     - name: nvm is installed
       shell: "{{ shell }} -elc 'nvm --version'"

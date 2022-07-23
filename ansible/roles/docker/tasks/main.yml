@@ -79,7 +79,7 @@
 
     - name: Add user to group
       user:
-        name: "{{ ansible_env.USER }}"
+        name: "{{ ansible_user }}"
         groups: docker
         append: yes
 

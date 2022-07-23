@@ -3,12 +3,14 @@
 - name: Verify
   hosts: all
   gather_facts: false
+  vars:
+    ansible_user: "ansible"
   tasks:
-  - assert:
-      that:
-        - shell_type | length > 0
-        - user.shell | length > 0
-  - name: check the user shell works
-    shell: "{{ shell }} -ilc 'echo $SHELL'"
-    register: output
-    failed_when: output.split('/')[-1] != shell_type
+    - name: "Include shell"
+      include_role:
+        name: "shell"
+    - name: Check facts
+      assert:
+        that:
+          - shell is defined
+          - shell|length > 0

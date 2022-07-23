@@ -1,7 +1,7 @@
 - name: Get user shell
   become: true
   user:
-    name: "{{ ansible_env.USER }}"
+    name: "{{ ansible_user }}"
   check_mode: true
   register: user
   failed_when: user.state != "present"

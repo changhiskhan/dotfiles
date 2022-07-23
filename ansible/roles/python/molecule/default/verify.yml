@@ -7,6 +7,8 @@
   roles:
     - { role: shell }
   vars_files: ../../vars/main.yml
+  vars:
+    ansible_user: "ansible"
   environment:
     PATH: "~/.local/bin:~/.poetry/bin:{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
   tasks:

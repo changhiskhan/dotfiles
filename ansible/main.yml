@@ -5,7 +5,7 @@
   vars_prompt:
     - name: ssh_passphrase
       prompt: Enter your ssh key passphrase?
-  vars:
+  set_fact:
     is_desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
   pre_tasks:
     - name: hostname
@@ -13,7 +13,7 @@
     - name: user
       command: echo ${USER}
     - debug:
-        msg: "Remote user is {{ ansible_env.USER }}"
+        msg: "Remote user is {{ ansible_user }}"
   roles:
     - { role: common, become: yes }
     - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }

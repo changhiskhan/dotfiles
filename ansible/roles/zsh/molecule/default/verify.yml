@@ -4,6 +4,8 @@
   hosts: all
   gather_facts: false
   become: false
+  vars:
+    ansible_user: "ansible"
   tasks:
   - name: Verify zsh exists
     shell: which zsh
@@ -12,7 +14,7 @@
   - name: Zsh is current user shell
     become: true
     user:
-      name: "{{ ansible_env.USER }}"
+      name: "{{ ansible_user }}"
       state: present
     check_mode: true
     register: user_info

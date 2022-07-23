@@ -1,6 +1,9 @@
 ---
 - name: Converge
   hosts: all
+  gather_facts: true
+  vars:
+    ansible_user: "ansible"
   tasks:
     - name: "Include terraform"
       include_role:
