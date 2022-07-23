@@ -1,0 +1,22 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: true
+  vars:
+    ssh_passphrase: "test"
+  tasks:
+  - name: Private key exists
+    stat:
+      path: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
+    register: ssh_key
+    failed_when: not ssh_key.stat.exists
+  - name: Public key exists
+    stat:
+      path: "{{ ansible_env.HOME }}/.ssh/id_ed25519.pub"
+    register: ssh_key
+    failed_when: not ssh_key.stat.exists
+
+
+

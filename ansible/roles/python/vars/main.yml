@@ -1,0 +1,2 @@
+download_dir: "/tmp"
+conda_dir: "{{ ansible_env.HOME }}/miniconda3"

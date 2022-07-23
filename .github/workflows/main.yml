@@ -12,6 +12,7 @@ jobs:
   molecule:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         role: [zsh, jvm, nodejs, docker, ssh, python, common, aws, terraform]
     steps:
@@ -24,5 +25,5 @@ jobs:
       - name: Install ansible and molecule
         run: pip install ansible molecule[docker]
       - name: Test ${{ matrix.role }} role
-        working-directory: "${{ github.repository }}/roles/${{ matrix.role }}"
+        working-directory: "${{ github.repository }}/ansible/roles/${{ matrix.role }}"
         run: molecule --debug -vv test

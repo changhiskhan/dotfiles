@@ -16,9 +16,7 @@ DO NOT PUT SECRETS in .zshrc
 4. gh auth login --with-token $GH_TOKEN
 5. gh ssh-key add ~/.ssh/id_ed25519.pub
 
-
 TODOs:
-
-- where to put conda init?
+- oh-my-zsh and spaceship theme?
 - conda config --set changeps1 False
 - terraform autocomplete?

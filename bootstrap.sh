@@ -8,18 +8,14 @@ pip3 install --user ansible
 touch ~/.zsh_local
 
 # pushd dotfiles
+pushd ansible
 export PATH=~/.local/bin:$PATH  # for ansible galaxy
 ansible-galaxy install -r requirements.yml
-export ANSIBLE_STDOUT_CALLBACK=debug
 
+export ANSIBLE_STDOUT_CALLBACK=debug
 if sudo -n true 2> /dev/null; then
     # for codespaces
-    ansible-playbook main.yml -vv -i hosts
-    mkdir -p ~/.emacs.d/
-    ln -s init.el ~/.emacs.d/init.el
-    conda init zsh  # conda path is diff    
-    conda config --set changeps1 False
-    conda install -y -c conda-forge gh    
+    ansible-playbook main.yml -vv -i inventory/hosts
     # gh auth git-credential
     # AWS creds using secrets
 else

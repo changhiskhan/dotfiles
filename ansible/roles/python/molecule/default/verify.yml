@@ -1,0 +1,22 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: true
+  become: false
+  roles:
+    - { role: shell }
+  vars_files: ../../vars/main.yml
+  environment:
+    PATH: "~/.local/bin:~/.poetry/bin:{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
+  tasks:
+    - name: "has {{ item }}"
+      shell: "{{ item }} --version"
+      register: exists
+      failed_when: exists.rc != 0
+      args:
+        executable: "{{ shell }}"
+      with_items:
+        - conda
+        - gh
+        - poetry

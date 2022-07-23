@@ -1,0 +1,24 @@
+- name: Ensure pip
+  become: true
+  apt:
+    pkg:
+      - python3-pip
+    state: present
+
+- name: Python cryptograph
+  pip:
+    name: cryptography
+    state: present
+    extra_args: "--user"
+
+- name: Make sure .ssh exists
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+
+- name: Generate SSH key
+  community.crypto.openssh_keypair:
+    type: ed25519
+    path: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
+    passphrase: "{{ ssh_passphrase }}"
+    backend: opensshbin
