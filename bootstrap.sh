@@ -12,15 +12,18 @@ pushd ansible
 export PATH=~/.local/bin:$PATH  # for ansible galaxy
 ansible-galaxy install -r requirements.yml
 
+if [ ! -d "ansible" ]; then
+  git clone https://github.com/changhiskhan/dotfiles
+  pushd dotfiles
+fi
+
+pushd ansible
 export ANSIBLE_STDOUT_CALLBACK=debug
 if sudo -n true 2> /dev/null; then
-    # for codespaces
-    ansible-playbook main.yml -vv -i inventory/hosts
-    # gh auth git-credential
-    # AWS creds using secrets
+    ansible-playbook main.yml -vv
+elif [ -z "$PS1" ]; then
+    echo "Need sudo password but not in interactive prompt"
+    exit 1
 else
-    set -i
-    ansible-playbook main.yml -vv \
-                              --ask-become-pass \
-                              -i inventory/hosts
+    ansible-playbook main.yml -vv --ask-become-pass
 fi

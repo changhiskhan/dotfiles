@@ -45,13 +45,7 @@
       register: terraform_install
     - name: Terraform auto-complete
       when: terraform_install.changed
-      shell: |
-        terraform -install-autocomplete
-        cat <<EOT >> {{ ansible_env.HOME }}/.zsh_local
-        autoload -U +X bashcompinit && bashcompinit
-        complete -o nospace -C /usr/bin/terraform terraform
-        EOT
-
+      shell: terraform -install-autocomplete
 - name: Validate
   shell: terraform -version
   register: has_terraform

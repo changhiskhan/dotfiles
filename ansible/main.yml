@@ -5,8 +5,9 @@
   vars_prompt:
     - name: ssh_passphrase
       prompt: Enter your ssh key passphrase?
-  set_fact:
+  vars:
     is_desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
+    links_dir: "{{ playbook_dir }}"
   pre_tasks:
     - name: hostname
       command: hostname
@@ -15,59 +16,16 @@
     - debug:
         msg: "Remote user is {{ ansible_user }}"
   roles:
-    - { role: common, become: yes }
-    - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }
-    - { role: ssh, become: no, tags: [ 'dev', 'ssh' ] }
-    - { role: python, become: no, tags: [ 'dev', 'python' ] }
-    - { role: docker, become: yes, tags: [ 'dev', 'docker' ] }
-    - { role: aws, become: yes, tags: [ 'dev', 'aws' ]}
-    - { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
-    - { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
-    - { role: jvm, become: no, tags: ['dev', 'jvm'] }
-    - { role: desktop, become: yes, tags: [ 'desktop' ], when: "(is_desktop is defined) and (is_desktop|length>0)"}
+    - { role: common }
+    - { role: zsh, tags: [ 'dev', 'zsh' ] }
+    - { role: ssh, tags: [ 'dev', 'ssh' ] }
+    - { role: python, tags: [ 'dev', 'python' ] }
+    - { role: docker, tags: [ 'dev', 'docker' ] }
+    - { role: aws, tags: [ 'dev', 'aws' ]}
+    - { role: nodejs, tags: [ 'dev', 'js' ] }
+    - { role: terraform, tags: [ 'dev', 'tf' ] }
+    - { role: jvm, tags: ['dev', 'jvm'] }
+    - { role: desktop, become: yes, tags: [ 'desktop' ],
+        when: "(is_desktop is defined) and (is_desktop|length>0)" }
   tasks:
-    - name: Link gitconfig
-      file:
-        src: "{{ playbook_dir }}/user_files/.gitconfig"
-        dest: "~/.gitconfig"
-        state: link
-    - name: Emacs init
-      block:
-        - name: Ensure .emacs.d directory
-          file:
-            path: "~/.emacs.d"
-            state: directory
-        - name: Link init.el
-          file:
-            src: "{{ playbook_dir }}/user_files/.emacs.d/init.el"
-            dest: "~/.emacs.d/init.el"
-            state: link
-    - name: Link zshrc
-      block:
-        - name: has zshrc already
-          stat:
-            path: "~/.zshrc"
-          failed_when: false
-          changed_when: false
-          register: has_zshrc
-        - name: backup existing zshrc
-          when: has_zshrc.stat.exists
-          block:
-            - copy:
-                remote_src: true
-                src: "~/.zshrc"
-                dest: "~/zshrc_bak"
-            - file:
-                path: "~/.zshrc"
-                state: absent
-        - name: link zshrc
-          file:
-            src: "{{ playbook_dir }}/user_files/.zshrc"
-            dest: "~/.zshrc"
-            state: link
-      - name: Configure conda
-        shell: conda config --set changeps1 False
-        environment:
-          PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
-        args:
-          executable: bash
+    - import_tasks: links.yml

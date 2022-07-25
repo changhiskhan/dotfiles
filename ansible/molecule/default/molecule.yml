@@ -1,0 +1,20 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: ubuntu
+    image: ubuntu:22.04
+    dockerfile: ../../test_common/Dockerfile.j2
+    pre_build_image: false
+    env:
+      REPO: "changhiskhan/dotfiles"
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      ubuntu:
+        ssh_passphrase: "test"
+verifier:
+  name: ansible

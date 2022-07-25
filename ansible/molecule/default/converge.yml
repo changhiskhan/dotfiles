@@ -1,0 +1,23 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    ansible_user: "ansible"
+    ssh_passphrase: "test"
+    links_dir: "/home/ansible/dotfiles"
+  roles:
+    - { role: ../../roles/common }
+    - { role: ../../roles/zsh, tags: [ 'dev', 'zsh' ] }
+    - { role: ../../roles/ssh, tags: [ 'dev', 'ssh' ] }
+    - { role: ../../roles/python, tags: [ 'dev', 'python' ] }
+    - { role: ../../roles/docker, tags: [ 'dev', 'docker' ] }
+    - { role: ../../roles/aws, tags: [ 'dev', 'aws' ]}
+    - { role: ../../roles/nodejs, tags: [ 'dev', 'js' ] }
+    - { role: ../../roles/terraform, tags: [ 'dev', 'tf' ] }
+    - { role: ../../roles/jvm, tags: ['dev', 'jvm'] }
+  tasks:
+    - name: Copy user_files
+      copy:
+        src: ../../../user_files
+        dest: "{{ links_dir }}/"
+    - import_tasks: ../../links.yml

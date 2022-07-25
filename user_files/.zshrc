@@ -25,6 +25,11 @@ unset __conda_setup
 
 source $HOME/.zsh_local
 
+# >>> terraform autocomplete >>>
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform
+# <<< terraform autocomplete <<<
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 if [ -z "$SDKMAN_DIR" ]; then
     export SDKMAN_DIR="$HOME/.sdk"
