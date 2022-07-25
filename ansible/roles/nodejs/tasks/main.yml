@@ -17,14 +17,12 @@
       file:
         path:
           - "{{ download_dir }}"
-        recurse: true
         state: directory
     - name: Ensure dirs
       become: false
       file:
         path:
           - "{{ nvm_dir }}"
-        recurse: true
         state: directory
     - name: Download nvm
       get_url:
