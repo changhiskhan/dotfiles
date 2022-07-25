@@ -15,15 +15,16 @@
     - debug:
         msg: "Remote user is {{ ansible_user }}"
   roles:
-    - { role: common, become: yes }
-    - { role: zsh, become: no, tags: [ 'dev', 'zsh' ] }
-    - { role: ssh, become: no, tags: [ 'dev', 'ssh' ] }
-    - { role: python, become: no, tags: [ 'dev', 'python' ] }
-    - { role: docker, become: yes, tags: [ 'dev', 'docker' ] }
-    - { role: aws, become: yes, tags: [ 'dev', 'aws' ]}
-    - { role: nodejs, become: yes, tags: [ 'dev', 'js' ] }
-    - { role: terraform, become: yes, tags: [ 'dev', 'tf' ] }
-    - { role: jvm, become: no, tags: ['dev', 'jvm'] }
-    - { role: desktop, become: yes, tags: [ 'desktop' ], when: "(is_desktop is defined) and (is_desktop|length>0)"}
+    - { role: common }
+    - { role: zsh, tags: [ 'dev', 'zsh' ] }
+    - { role: ssh, tags: [ 'dev', 'ssh' ] }
+    - { role: python, tags: [ 'dev', 'python' ] }
+    - { role: docker, tags: [ 'dev', 'docker' ] }
+    - { role: aws, tags: [ 'dev', 'aws' ]}
+    - { role: nodejs, tags: [ 'dev', 'js' ] }
+    - { role: terraform, tags: [ 'dev', 'tf' ] }
+    - { role: jvm, tags: ['dev', 'jvm'] }
+    - { role: desktop, become: yes, tags: [ 'desktop' ],
+        when: "(is_desktop is defined) and (is_desktop|length>0)" }
   tasks:
     - import_tasks: links.yml

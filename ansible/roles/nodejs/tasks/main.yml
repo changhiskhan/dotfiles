@@ -17,11 +17,6 @@
       file:
         path:
           - "{{ download_dir }}"
-        state: directory
-    - name: Ensure dirs
-      become: false
-      file:
-        path:
           - "{{ nvm_dir }}"
         state: directory
     - name: Download nvm

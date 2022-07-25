@@ -5,14 +5,14 @@
     ansible_user: "ansible"
     ssh_passphrase: "test"
   roles:
-    - { role: ../../roles/common, become: yes }
-    - { role: ../../roles/zsh, become: no, tags: [ 'dev', 'zsh' ] }
-    - { role: ../../roles/ssh, become: no, tags: [ 'dev', 'ssh' ] }
-    - { role: ../../roles/python, become: no, tags: [ 'dev', 'python' ] }
-    - { role: ../../roles/docker, become: yes, tags: [ 'dev', 'docker' ] }
-    - { role: ../../roles/aws, become: yes, tags: [ 'dev', 'aws' ]}
-    - { role: ../../roles/nodejs, become: yes, tags: [ 'dev', 'js' ] }
-    - { role: ../../roles/terraform, become: yes, tags: [ 'dev', 'tf' ] }
-    - { role: ../../roles/jvm, become: no, tags: ['dev', 'jvm'] }
+    - { role: ../../roles/common }
+    - { role: ../../roles/zsh, tags: [ 'dev', 'zsh' ] }
+    - { role: ../../roles/ssh, tags: [ 'dev', 'ssh' ] }
+    - { role: ../../roles/python, tags: [ 'dev', 'python' ] }
+    - { role: ../../roles/docker, tags: [ 'dev', 'docker' ] }
+    - { role: ../../roles/aws, tags: [ 'dev', 'aws' ]}
+    - { role: ../../roles/nodejs, tags: [ 'dev', 'js' ] }
+    - { role: ../../roles/terraform, tags: [ 'dev', 'tf' ] }
+    - { role: ../../roles/jvm, tags: ['dev', 'jvm'] }
   tasks:
     - import_tasks: ../../links.yml
