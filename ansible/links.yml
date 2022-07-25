@@ -31,11 +31,11 @@
         - file:
             path: "~/.zshrc"
             state: absent
-    - name: link zshrc
-      file:
-        src: "{{ links_dir }}/user_files/.zshrc"
-        dest: "~/.zshrc"
-        state: link
+        - name: link zshrc
+          file:
+            src: "{{ links_dir }}/user_files/.zshrc"
+            dest: "~/.zshrc"
+            state: link
 - name: Configure conda
   shell: conda config --set changeps1 False
   environment:
