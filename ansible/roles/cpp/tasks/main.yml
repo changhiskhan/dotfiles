@@ -48,8 +48,7 @@
   block:
     - name: Download arrow apt repo
       get_url:
-        url: "https://apache.jfrog.io/artifactory/arrow/{{ distro_name.stdout }} \
-              /apache-arrow-apt-source-latest-{{ release_name }}.deb"
+        url: "https://apache.jfrog.io/artifactory/arrow/{{ distro_name.stdout }}/apache-arrow-apt-source-latest-{{ release_name.stdout }}.deb"
         dest: "{{ download_dir }}/arrow-apt-repo.deb"
 
     - name: Install Arrow repository
