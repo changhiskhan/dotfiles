@@ -1,7 +1,7 @@
 ---
 - name: Link gitconfig
   file:
-    src: "{{ playbook_dir }}/user_files/.gitconfig"
+    src: "{{ links_dir }}/user_files/.gitconfig"
     dest: "~/.gitconfig"
     state: link
 - name: Emacs init
@@ -12,7 +12,7 @@
         state: directory
     - name: Link init.el
       file:
-        src: "{{ playbook_dir }}/user_files/.emacs.d/init.el"
+        src: "{{ links_dir }}/user_files/.emacs.d/init.el"
         dest: "~/.emacs.d/init.el"
         state: link
 - name: Link zshrc
@@ -20,8 +20,6 @@
     - name: has zshrc already
       stat:
         path: "~/.zshrc"
-      failed_when: false
-      changed_when: false
       register: has_zshrc
     - name: backup existing zshrc
       when: has_zshrc.stat.exists
@@ -35,7 +33,7 @@
             state: absent
     - name: link zshrc
       file:
-        src: "{{ playbook_dir }}/user_files/.zshrc"
+        src: "{{ links_dir }}/user_files/.zshrc"
         dest: "~/.zshrc"
         state: link
 - name: Configure conda
@@ -44,3 +42,4 @@
     PATH: "{{ conda_dir }}/bin:{{ ansible_env.PATH }}"
   args:
     executable: bash
+  changed_when: false

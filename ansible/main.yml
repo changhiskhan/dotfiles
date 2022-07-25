@@ -7,6 +7,7 @@
       prompt: Enter your ssh key passphrase?
   vars:
     is_desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
+    links_dir: "{{ playbook_dir }}"
   pre_tasks:
     - name: hostname
       command: hostname
