@@ -22,7 +22,7 @@
         path: "~/.zshrc"
       register: has_zshrc
     - name: backup existing zshrc
-      when: has_zshrc.stat.exists
+      when: has_zshrc.stat.exists and not has_zshrc.stat.islnk
       block:
         - copy:
             remote_src: true
@@ -31,11 +31,12 @@
         - file:
             path: "~/.zshrc"
             state: absent
-        - name: link zshrc
-          file:
-            src: "{{ links_dir }}/user_files/.zshrc"
-            dest: "~/.zshrc"
-            state: link
+    - name: link zshrc
+      when: not has_zshrc.stat.exists or not has_zshrc.stat.islnk
+      file:
+        src: "{{ links_dir }}/user_files/.zshrc"
+        dest: "~/.zshrc"
+        state: link
 - name: Configure conda
   shell: conda config --set changeps1 False
   environment:
