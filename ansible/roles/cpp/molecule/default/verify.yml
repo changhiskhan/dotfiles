@@ -1,0 +1,16 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Check lib
+    shell: "apt show {{ item }}"
+    register: has_lib
+    failed_when: has_lib.rc != 0
+    with_items:
+      - libarrow-python-dev
+      - libarrow-dev
+      - libarrow-dataset-dev
+      - libparquet-dev
+      - libprotobuf-dev

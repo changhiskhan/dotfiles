@@ -25,6 +25,7 @@
     - { role: nodejs, tags: [ 'dev', 'js' ] }
     - { role: terraform, tags: [ 'dev', 'tf' ] }
     - { role: jvm, tags: ['dev', 'jvm'] }
+    - { role: cpp, tags: [ 'dev', 'cpp' ] }
     - { role: desktop, become: yes, tags: [ 'desktop' ],
         when: "(is_desktop is defined) and (is_desktop|length>0)" }
   tasks:

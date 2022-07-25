@@ -15,6 +15,7 @@
     - { role: ../../roles/nodejs, tags: [ 'dev', 'js' ] }
     - { role: ../../roles/terraform, tags: [ 'dev', 'tf' ] }
     - { role: ../../roles/jvm, tags: ['dev', 'jvm'] }
+    - { role: ../../roles/cpp, tags: ['dev', 'cpp'] }
   tasks:
     - name: Copy user_files
       copy:

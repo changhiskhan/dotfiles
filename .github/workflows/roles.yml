@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        role: [zsh, jvm, nodejs, docker, ssh, python, common, aws, terraform, shell]
+        role: [zsh, jvm, nodejs, docker, ssh, python, common, aws, terraform, shell, cpp]
     steps:
       - uses: actions/checkout@v3
         with:
