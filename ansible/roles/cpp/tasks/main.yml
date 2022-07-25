@@ -79,3 +79,4 @@
       - libarrow-flight-glib-dev
       - libparquet-dev
       - libparquet-glib-dev
+      - libprotobuf-dev
