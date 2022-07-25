@@ -13,4 +13,4 @@
     with_items:
       - "~/.gitconfig"
       - "~/.zshrc"
-      - "~/.emac.d/init.el"
+      - "~/.emacs.d/init.el"
