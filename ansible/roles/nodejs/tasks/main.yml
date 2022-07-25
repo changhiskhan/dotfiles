@@ -4,14 +4,6 @@
     pkg: curl
     state: present
 
-- name: Ensure dirs
-  file:
-    path:
-      - "{{ download_dir }}"
-      - "{{ nvm_dir }}"
-    recurse: true
-    state: directory
-
 - name: nvm is installed
   stat:
     path: "{{ nvm_dir }}/nvm.sh"
@@ -21,17 +13,29 @@
 - name: Install nvm
   when: not has_nvm.stat.exists
   block:
-  - name: Download nvm
-    get_url:
-      url: https://raw.githubusercontent.com/creationix/nvm/master/install.sh
-      dest: "{{ download_dir }}/install-nvm.sh"
-      mode: 0755
-  - name: Run installer
-    shell: "{{ download_dir }}/install-nvm.sh"
-    args:
-      executable: "{{ shell }}"
-    environment:
-      NVM_DIR: "{{ nvm_dir }}"
+    - name: Ensure dirs
+      file:
+        path:
+          - "{{ download_dir }}"
+        recurse: true
+        state: directory
+    - name: Ensure dirs
+      file:
+        path:
+          - "{{ nvm_dir }}"
+        recurse: true
+        state: directory
+    - name: Download nvm
+      get_url:
+        url: https://raw.githubusercontent.com/creationix/nvm/master/install.sh
+        dest: "{{ download_dir }}/install-nvm.sh"
+        mode: 0755
+    - name: Run installer
+      shell: "{{ download_dir }}/install-nvm.sh"
+      args:
+        executable: "{{ shell }}"
+      environment:
+        NVM_DIR: "{{ nvm_dir }}"
 
 - name: Install nodejs
   shell: |
