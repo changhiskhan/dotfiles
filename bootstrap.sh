@@ -14,13 +14,8 @@ ansible-galaxy install -r requirements.yml
 
 export ANSIBLE_STDOUT_CALLBACK=debug
 if sudo -n true 2> /dev/null; then
-    # for codespaces
-    ansible-playbook main.yml -vv -i inventory/hosts
-    # gh auth git-credential
-    # AWS creds using secrets
+    ansible-playbook main.yml -vv
 else
     set -i
-    ansible-playbook main.yml -vv \
-                              --ask-become-pass \
-                              -i inventory/hosts
+    ansible-playbook main.yml -vv --ask-become-pass
 fi

@@ -18,5 +18,4 @@ DO NOT PUT SECRETS in .zshrc
 
 TODOs:
 - oh-my-zsh and spaceship theme?
-- conda config --set changeps1 False
 - terraform autocomplete?

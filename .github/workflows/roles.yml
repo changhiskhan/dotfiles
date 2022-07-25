@@ -1,4 +1,4 @@
-# test everything together
+# test individual roles
 on:
   push:
     branches:
@@ -12,6 +12,10 @@ on:
 jobs:
   molecule:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        role: [zsh, jvm, nodejs, docker, ssh, python, common, aws, terraform, shell]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -21,7 +25,6 @@ jobs:
           python-version: '3.9'
       - name: Install ansible and molecule
         run: pip install ansible molecule[docker]
-      - name: Test combined
-        working-directory: "${{ github.repository }}/ansible"
+      - name: Test ${{ matrix.role }} role
+        working-directory: "${{ github.repository }}/ansible/roles/${{ matrix.role }}"
         run: molecule --debug -vv test
-
