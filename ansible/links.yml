@@ -44,4 +44,3 @@
   args:
     executable: bash
   changed_when: false
-
