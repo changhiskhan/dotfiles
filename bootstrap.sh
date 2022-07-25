@@ -12,8 +12,7 @@ pushd ansible
 export PATH=~/.local/bin:$PATH  # for ansible galaxy
 ansible-galaxy install -r requirements.yml
 
-OUTPUT=$(basename "$(git rev-parse --show-toplevel)" || echo "NOT_REPO")
-if [ "$OUTPUT" == "NOT_REPO" ]; then
+if [ ! -d "ansible" ]; then
   git clone https://github.com/changhiskhan/dotfiles
   pushd dotfiles
 fi

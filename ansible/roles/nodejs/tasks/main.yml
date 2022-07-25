@@ -20,6 +20,7 @@
         recurse: true
         state: directory
     - name: Ensure dirs
+      become: false
       file:
         path:
           - "{{ nvm_dir }}"
