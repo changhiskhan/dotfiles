@@ -1,0 +1,13 @@
+---
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Check lib
+    apt:
+      name: libarrow-python-dev
+      state: present
+    check_mode: true
+    register: has_lib
+    failed_when: has_lib

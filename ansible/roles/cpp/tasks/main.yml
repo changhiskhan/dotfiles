@@ -1,0 +1,82 @@
+- name: Install required system packages
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: true
+  vars:
+    packages:
+      - cmake
+      - build-essential
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+      - lsb-release
+      - wget
+      - gawk
+      - gnupg
+
+- name: Get distro name
+  shell: "lsb_release -si | awk '{print tolower($0)}'"
+  register: distro_name
+  changed_when: false
+- debug:
+    var: distro_name
+
+- name: Get release name
+  shell: "lsb_release -cs | awk '{print tolower($0)}'"
+  register: release_name
+  changed_when: false
+- debug:
+    var: release_name
+
+- name: Get arch name
+  shell: "dpkg --print-architecture"
+  register: arch_name
+  changed_when: false
+- debug:
+    var: arch_name
+
+- name: Has arrow repo
+  shell: apt search apache-arrow-apt-source
+  changed_when: false
+  failed_when: false
+  register: has_arrow_repo
+
+- name: Add arrow apt repo
+  when: has_arrow_repo.rc != 0
+  block:
+    - name: Download arrow apt repo
+      get_url:
+        url: "https://apache.jfrog.io/artifactory/arrow/{{ distro_name.stdout }} \
+              /apache-arrow-apt-source-latest-{{ release_name }}.deb"
+        dest: "{{ download_dir }}/arrow-apt-repo.deb"
+
+    - name: Install Arrow repository
+      become: true
+      apt:
+        deb: "{{ download_dir }}/arrow-apt-repo.deb"
+        state: present
+
+    - name: Remove deb
+      file:
+        path: "{{ download_dir }}/arrow-apt-repo.deb"
+        state: absent
+
+- name: Install arrow libs
+  become: true
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: true
+  vars:
+    packages:
+      - libarrow-dev
+      - libarrow-glib-dev
+      - libarrow-dataset-dev
+      - libarrow-dataset-glib-dev
+      - libarrow-python-dev
+      - libarrow-flight-dev
+      - libarrow-flight-glib-dev
+      - libparquet-dev
+      - libparquet-glib-dev
