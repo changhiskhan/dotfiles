@@ -4,7 +4,7 @@
   vars:
     ansible_user: "ansible"
     ssh_passphrase: "test"
-    links_dir: "/home/ansible/dotfiles"
+    links_dir: "/home/ansible/dotfiles/user_files"
   roles:
     - { role: ../../roles/common }
     - { role: ../../roles/zsh, tags: [ 'dev', 'zsh' ] }

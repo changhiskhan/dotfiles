@@ -4,6 +4,8 @@ export ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
 ZSH_THEME="spaceship"
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
+export SPACESHIP_CONDA_SYMBOL="🐍 "
+
 
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1

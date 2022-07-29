@@ -4,12 +4,11 @@
 (emacs-version)
 (defconst emacs-start-time (current-time))
 (setq inhibit-startup-message t)
-(global-linum-mode t)
+;;(global-linum-mode t)
 
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/downloads"))
 (package-initialize)
 
 ;; Bootstrap 'use-package'
@@ -30,9 +29,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(conda-anaconda-home (expand-file-name "~/miniconda3") t)
+ '(conda-anaconda-home (expand-file-name "~/miniconda3/"))
  '(package-selected-packages
-   '(conda magit blacken pyimpsort importmagic pyimport better-defaults material-theme solarized-theme use-package aria2))
+   '(importmagic pyimport flycheck dracula-theme zenburn-theme conda magit blacken better-defaults use-package aria2))
  '(warning-suppress-types '((comp))))
 
 (custom-set-faces
@@ -42,45 +41,34 @@
  ;; If there is more than one, they won't work right.
  )
 
-(if window-system
-    (load-theme 'solarized-dark t)
-    ;;(load-theme 'material t)
-  )
+(load-theme 'jetbrains-darcula t)
 
 (setq-default indent-tabs-mode nil)
-(setq tab-width 4)
 (setq column-number-mode t)
-(setq-default fill-column 80)
-(setq-default global-display-fill-column-indicator-column t)
+
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-
-(use-package flycheck
-  :ensure t
-  :init
-  (global-flycheck-mode)
-  (require 'flycheck-mypy)
-  )
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 (require 'conda)
 (conda-env-initialize-interactive-shells)
 
+(define-key python-mode-map (kbd "C-c C-i") #'pyimport-insert-missing)
+
 (add-hook 'python-mode-hook
           (lambda ()
             (anaconda-mode)
-            (flycheck-mode)
             (anaconda-eldoc-mode)
-            (importmagic-mode)
             (blacken-mode)
-            (add-hook 'before-save-hook #'pyimpsort-buffer)
+            (importmagic-mode)
             (setq tab-width 4)
-            '(python-guess-indent nil)
-            '(python-indent 4)
-            (add-to-list 'flycheck-disabled-checkers 'python-flake8)
+            (setq-default display-fill-column-indicator-column 79)
+            (display-fill-column-indicator-mode)
+            (add-to-list 'flycheck-disabled-checkers 'python-mypy)
             (add-to-list 'flycheck-disabled-checkers 'python-pylint)
             ))
-
 (provide 'init)
 ;;; init.el ends here
+

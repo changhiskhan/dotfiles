@@ -7,17 +7,15 @@ sudo apt install -y python3 python3-pip git
 pip3 install --user ansible
 touch ~/.zsh_local
 
-# pushd dotfiles
-pushd ansible
-export PATH=~/.local/bin:$PATH  # for ansible galaxy
-ansible-galaxy install -r requirements.yml
-
 if [ ! -d "ansible" ]; then
   git clone https://github.com/changhiskhan/dotfiles
   pushd dotfiles
 fi
 
 pushd ansible
+export PATH=~/.local/bin:$PATH  # for ansible galaxy
+ansible-galaxy install -r requirements.yml
+
 export ANSIBLE_STDOUT_CALLBACK=debug
 if sudo -n true 2> /dev/null; then
     ansible-playbook main.yml -vv
