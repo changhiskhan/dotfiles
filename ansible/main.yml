@@ -6,8 +6,9 @@
     - name: ssh_passphrase
       prompt: Enter your ssh key passphrase?
   vars:
+    ansible_user: "{{ lookup('env', 'USER') }}"
     is_desktop: "{{ lookup('env', 'XDG_CURRENT_DESKTOP') }}"
-    links_dir: "{{ playbook_dir }}"
+    links_dir: "{{ playbook_dir }}/../user_files"
   pre_tasks:
     - name: hostname
       command: hostname

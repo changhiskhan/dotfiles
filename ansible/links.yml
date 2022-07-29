@@ -1,7 +1,7 @@
 ---
 - name: Link gitconfig
   file:
-    src: "{{ links_dir }}/user_files/.gitconfig"
+    src: "{{ links_dir }}/.gitconfig"
     dest: "~/.gitconfig"
     state: link
 - name: Emacs init
@@ -12,7 +12,7 @@
         state: directory
     - name: Link init.el
       file:
-        src: "{{ links_dir }}/user_files/.emacs.d/init.el"
+        src: "{{ links_dir }}/.emacs.d/init.el"
         dest: "~/.emacs.d/init.el"
         state: link
 - name: Link zshrc
@@ -34,7 +34,7 @@
     - name: link zshrc
       when: not has_zshrc.stat.exists or not has_zshrc.stat.islnk
       file:
-        src: "{{ links_dir }}/user_files/.zshrc"
+        src: "{{ links_dir }}/.zshrc"
         dest: "~/.zshrc"
         state: link
 - name: Configure conda
